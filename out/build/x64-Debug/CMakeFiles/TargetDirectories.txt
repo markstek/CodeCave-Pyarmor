@@ -1,0 +1,3 @@
+C:/Users/SERVER-PC/Downloads/CodeCave-Hook-Pyarmor/out/build/x64-Debug/CMakeFiles/codecave_dumper.dir
+C:/Users/SERVER-PC/Downloads/CodeCave-Hook-Pyarmor/out/build/x64-Debug/CMakeFiles/edit_cache.dir
+C:/Users/SERVER-PC/Downloads/CodeCave-Hook-Pyarmor/out/build/x64-Debug/CMakeFiles/rebuild_cache.dir
