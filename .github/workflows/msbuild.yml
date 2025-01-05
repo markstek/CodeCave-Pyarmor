@@ -1,48 +1,45 @@
-name: MinGW Build for CodeCave-Pyarmor
+name: Build CodeCave-Pyarmor
 
 on:
   push:
-    branches: [ "main" ]
+    branches:
+      - main
   pull_request:
-    branches: [ "main" ]
-
-env:
-  # Configuration type to build.
-  BUILD_CONFIGURATION: Release
-
-permissions:
-  contents: read
+    branches:
+      - main
 
 jobs:
   build:
     runs-on: windows-latest
 
     steps:
-    # Step 1: Checkout the code
-    - uses: actions/checkout@v4
+      # Step 1: Checkout the code
+      - uses: actions/checkout@v4
 
-    # Step 2: Install dependencies (MinGW and CMake)
-    - name: Install MinGW and CMake
-      run: |
-        choco install -y mingw cmake
-        refreshenv
+      # Step 2: Install dependencies (MinGW and CMake)
+      - name: Install MinGW and CMake
+        run: |
+          choco install -y mingw cmake
+          refreshenv
+          # Manually add CMake to PATH
+          echo "C:\\Program Files\\CMake\\bin" >> $env:GITHUB_PATH
 
-    # Step 3: Configure the project with CMake
-    - name: Configure Build
-      run: |
-        mkdir build
-        cd build
-        cmake -G "MinGW Makefiles" ..
+      # Step 3: Configure the build with CMake
+      - name: Configure Build
+        run: |
+          mkdir build
+          cd build
+          cmake -G "MinGW Makefiles" ..
 
-    # Step 4: Build the project using MinGW
-    - name: Build with MinGW
-      run: |
-        cd build
-        mingw32-make
+      # Step 4: Build the project using MinGW
+      - name: Build with MinGW
+        run: |
+          cd build
+          mingw32-make
 
-    # Step 5: Upload the built executable as an artifact
-    - name: Upload Build Artifacts
-      uses: actions/upload-artifact@v3
-      with:
-        name: CodeCave-Pyarmor-Executable
-        path: build/*.exe
+      # Step 5: Upload the built executable as an artifact
+      - name: Upload Build Artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: CodeCave-Pyarmor-Executable
+          path: build/*.exe
