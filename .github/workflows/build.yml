@@ -1,0 +1,44 @@
+name: Build CodeCave-Pyarmor
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      # Step 1: Checkout the code
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      # Step 2: Install dependencies (MinGW and CMake)
+      - name: Install Dependencies
+        run: |
+          choco install -y mingw cmake
+          # Add MinGW and CMake to PATH
+          echo "C:\\Program Files\\CMake\\bin" >> $env:GITHUB_PATH
+          echo "C:\\Program Files\\mingw-w64\\mingw64\\bin" >> $env:GITHUB_PATH
+
+      # Step 3: Configure the build with CMake
+      - name: Configure Build
+        run: |
+          mkdir build
+          cd build
+          cmake -G "MinGW Makefiles" ..
+
+      # Step 4: Build with MinGW
+      - name: Build with MinGW
+        run: |
+          cd build
+          mingw32-make
+
+      # Step 5: Upload the built executable as an artifact
+      - name: Upload Build Artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: CodeCave-Pyarmor-Executable
+          path: build/*.exe
