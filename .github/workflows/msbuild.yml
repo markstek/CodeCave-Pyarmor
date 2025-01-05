@@ -14,14 +14,15 @@ jobs:
 
     steps:
       # Step 1: Checkout the code
-      - uses: actions/checkout@v4
+      - name: Checkout Code
+        uses: actions/checkout@v4
 
       # Step 2: Install dependencies (MinGW and CMake)
-      - name: Install MinGW and CMake
+      - name: Install Dependencies
         run: |
           choco install -y mingw cmake
           refreshenv
-          # Manually add CMake to PATH
+          # Add CMake to PATH
           echo "C:\\Program Files\\CMake\\bin" >> $env:GITHUB_PATH
 
       # Step 3: Configure the build with CMake
